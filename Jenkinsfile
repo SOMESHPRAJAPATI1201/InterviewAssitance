@@ -1,35 +1,51 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'python:3.11' }
+    }
+
+    environment {
+        APP_NAME = 'dem-app'
+    }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                // Replace with your repository URL
+                git branch: 'main', url: 'https://github.com/SOMESHPRAJAPATI1201/InterviewAssitance'
             }
         }
-        stage('Build') {
+        
+        stage('DeepSource Scan') {
+            agent {
+                docker { image 'python:3.11' }
+            }
             steps {
-                echo 'Building the project...'
-                // Add build steps here, e.g., sh 'make build'
+                withCredentials([string(credentialsId: 'DEEP_SOURCE_TOKEN', variable: 'DS_TOKEN')]) {
+                    sh '''
+                        pip install --upgrade deepsource-cli
+                        deepsource analyze --analyzer python --access-token $DS_TOKEN
+                    '''
+                }
             }
         }
+
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                // Add test steps here, e.g., sh 'make test'
+                echo "Running tests for ${APP_NAME}..."
+                // Replace with your test command
+                // Java/Gradle
+                // sh 'npm test'          // Node.js
+                // sh 'pytest'            // Python
             }
         }
     }
 
     post {
-        always {
-            echo 'Pipeline finished.'
-        }
         success {
-            echo 'Tests passed!'
+            echo "✅ DEM test pipeline completed successfully!"
         }
         failure {
-            echo 'Tests failed.'
+            echo "❌ DEM test pipeline failed!"
         }
     }
 }

@@ -1,0 +1,16 @@
+version = 1
+
+# Python analyzer
+[[analyzers]]
+name = "python"
+enabled = true
+
+# JavaScript / React analyzer
+[[analyzers]]
+name = "javascript"
+enabled = true
+
+# Shell scripts (for Dockerfile, Jenkinsfile, etc.)
+[[analyzers]]
+name = "shell"
+enabled = true
