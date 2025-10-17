@@ -12,4 +12,8 @@ export default defineConfig({
       'localhost'
     ],
   },
+  test: {
+    globals: true,
+    environment: 'jsdom',  // or 'node', depending on your testing environment
+  }
 })
