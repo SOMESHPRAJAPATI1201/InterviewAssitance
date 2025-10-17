@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - 'frontend/**'
+  push:
+    paths:
+      - 'frontend/**'
 
 jobs:
   lint:
